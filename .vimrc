@@ -1,4 +1,14 @@
+" make copy to system clipboard
 set nocompatible
+filetype plugin indent on
+" On pressing tab, insert 2 spaces
+set expandtab
+" show existing tab with 2 spaces width
+set tabstop=2
+set softtabstop=2
+" when indenting with '>', use 2 spaces width
+set shiftwidth=2
+
 filetype plugin on
 syntax on
 " set the runtime path to include Vundle and initialize
@@ -20,13 +30,19 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'rking/ag.vim'
 Plugin 'Raimondi/delimitMate'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rhysd/vim-clang-format'
 " Plugin 'nanotech/jellybeans.vim'
 call vundle#end()            " required
 filetype plugin indent on
-set omnifunc=syntaxcomplete#Complete
-
+let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
+let g:ycm_global_ycm_extra_conf ='~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
+let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/*','~/.vim/bundle/YouCompleteMe/third_party/ycmd/*']
+" set omnifunc=syntaxcomplete#Complete
+let g:ycm_confirm_extra_conf=1
 set number
-
+set clipboard=unnamedplus
 set backspace=2
 
 " vim-go related config
@@ -66,7 +82,7 @@ let g:go_highlight_build_constraints = 1
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_extra_types = 1
-
+let g:ycm_use_clangd = 0
 " necomplete related config
 let g:neocomplete#enable_at_startup = 1
 
@@ -76,7 +92,6 @@ set listchars=tab:▸\ ,eol:¬
 " Enable using mouse in iterm
 set mouse=a
 
-set clipboard=unnamed
 " NERDTree
 nmap <leader>n :NERDTreeToggle<CR>
 let NERDTreeHighlightCursorline=1
@@ -84,7 +99,3 @@ let g:nerdtree_open_on_console_startup=0
 
 " ag under cursor
 nmap <Leader>k :Ag <cword> .<CR>
-
-" cats related
-
-nmap <Leader>f :Ag <cword> ~/code/go/src/github.com/carousell/Cats/Cats<CR>
