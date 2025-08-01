@@ -21,28 +21,39 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
-Plugin 'mdempsky/gocode', {'rtp': 'vim/'}
 Plugin 'fatih/vim-go'
 Plugin 'vim-airline/vim-airline'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'scrooloose/nerdtree'
+Plugin 'preservim/nerdtree'
 Plugin 'rking/ag.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'vim-syntastic/syntastic'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'ycm-core/YouCompleteMe'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'github/copilot.vim'
+Plugin 'OmniSharp/omnisharp-vim'
+
 " Plugin 'nanotech/jellybeans.vim'
 call vundle#end()            " required
+
+let g:ctrlp_show_hidden = 1
 filetype plugin indent on
-let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
+" let g:ycm_path_to_python_interpreter = '/usr/bin/python3'
 let g:ycm_global_ycm_extra_conf ='~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
 let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/*','~/.vim/bundle/YouCompleteMe/third_party/ycmd/*']
 " set omnifunc=syntaxcomplete#Complete
 let g:ycm_confirm_extra_conf=1
 set number
-set clipboard=unnamedplus
+
+set clipboard=unnamed
+if has("unix")
+  let s:uname = system("uname")
+  if s:uname == "Darwin\n"
+    set clipboard=unnamed
+  endif
+endif
 set backspace=2
 
 " vim-go related config
@@ -66,11 +77,12 @@ au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 let g:go_fmt_command = "goimports"
 let g:go_test_show_name = 1
 let g:go_snippet_engine = "neosnippet"
-let g:go_bin_path = expand("~/.gotools")
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:go_bin_path = expand("~/sdk/go1.24.5/.gotools")
+let g:syntastic_go_checkers = ['golangci-lint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:go_list_type = "quickfix"
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_command = "golangci-lint"
+let g:go_metalinter_enabled = ['vet', 'revive', 'errcheck']
 let g:go_auto_type_info = 1
 " syntax highlighting
 let g:go_highlight_functions = 1
@@ -86,6 +98,10 @@ let g:ycm_use_clangd = 0
 " necomplete related config
 let g:neocomplete#enable_at_startup = 1
 
+ let g:copilot_filetypes = {
+                              \ 'yaml': v:true,
+                              \ }
+
 set list
 set listchars=tab:▸\ ,eol:¬
 
@@ -96,6 +112,4 @@ set mouse=a
 nmap <leader>n :NERDTreeToggle<CR>
 let NERDTreeHighlightCursorline=1
 let g:nerdtree_open_on_console_startup=0
-
-" ag under cursor
-nmap <Leader>k :Ag <cword> .<CR>
+let NERDTreeShowHidden=1
