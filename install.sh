@@ -1,6 +1,6 @@
 #!/bin/bash
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-cp .vimrc ~/.vimrc
+ln -s .vimrc ~/.vimrc
 vim +PluginInstall +qall
 vim +GoInstallBinaries
 #assuming it is for debian based linux machines
